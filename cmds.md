@@ -6,7 +6,6 @@ printf
 scanf
 
 struct lstCmds{
-  tipo(enum)
   lstCmds
   lstNext
 }
