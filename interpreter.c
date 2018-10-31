@@ -5,6 +5,15 @@ void printTab(int n){
   for(int i=0;i<n-1;i++) printf("  ");
 }
 
+void printVar(Var *var, int tabs){
+  if(var->type == VARINT){
+    printTab(tabs);
+    printf("int\n");
+  }
+  printTab(tabs);
+  printf("%s\n", var->name);
+}
+
 void printExpr(Expr* expr, int tabs){
   if(expr == 0){
     printf("!!!!ERROR!!!!\n");
@@ -88,15 +97,6 @@ void printBoolExpr(BoolExpr* expr, int tabs){
     printBoolExpr(expr->attr.complex.left,tabs+2);
     printBoolExpr(expr->attr.complex.right,tabs+2);
   }
-}
-
-void printVar(Var *var, int tabs){
-  if(var->type == VARINT){
-    printTab(tabs);
-    printf("int\n");
-  }
-  printTab(tabs);
-  printf("%s\n", var->name);
 }
 
 void printAttr(Attrib *attrib, int tabs){

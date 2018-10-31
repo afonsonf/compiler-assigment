@@ -3,14 +3,21 @@
 #include <stdlib.h> // for malloc
 #include "ast.h" // AST header
 
-Expr* ast_integer(int v) {
+Expr* ast_expr_integer(int v) {
   Expr* node = (Expr*) malloc(sizeof(Expr));
   node->kind = E_INTEGER;
   node->attr.value = v;
   return node;
 }
 
-Expr* ast_operation
+Expr* ast_expr_var(Var *var){
+  Expr* node = (Expr*) malloc(sizeof(Expr));
+  node->kind = E_VAR;
+  node->attr.var = var;
+  return node;
+}
+
+Expr* ast_expr_operation
 (int operator, Expr* left, Expr* right) {
   Expr* node = (Expr*) malloc(sizeof(Expr));
   node->kind = E_OPERATION;
@@ -64,12 +71,5 @@ Var* ast_var(int type, char *name){
   Var* node = (Var*) malloc(sizeof(Var));
   node->name = name;
   node->type = type;
-  return node;
-}
-
-Expr* ast_expr_var(Var *var){
-  Expr* node = (Expr*) malloc(sizeof(Expr));
-  node->kind = E_VAR;
-  node->attr.var = var;
   return node;
 }
