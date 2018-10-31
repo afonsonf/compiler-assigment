@@ -9,7 +9,7 @@ void printExpr(Expr* expr, int tabs){
   if(expr == 0){
     printf("!!!!ERROR!!!!\n");
   }
-  else if(expr->kind == E_Var){
+  else if(expr->kind == E_VAR){
     printVar(expr->attr.var,tabs);
   }
   else if(expr->kind == E_INTEGER){

@@ -66,3 +66,10 @@ Var* ast_var(int type, char *name){
   node->type = type;
   return node;
 }
+
+Expr* ast_expr_var(Var *var){
+  Expr* node = (Expr*) malloc(sizeof(Expr));
+  node->kind = E_VAR;
+  node->attr.var = var;
+  return node;
+}

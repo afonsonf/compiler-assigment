@@ -7,7 +7,7 @@
 struct _Expr {
   enum {
     E_INTEGER,
-    E_Var,
+    E_VAR,
     E_OPERATION
   } kind;
   union {
@@ -17,7 +17,7 @@ struct _Expr {
       struct _Expr* left;
       struct _Expr* right;
     } op; // for binary expressions
-    Var* var;
+    struct _Var* var;
   } attr;
 };
 
