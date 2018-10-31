@@ -133,27 +133,31 @@ boolexpr:
 
 expr:
   INT {
-    $$ = ast_integer($1);
+    $$ = ast_expr_integer($1);
+  }
+  |
+  VAR {
+    $$ = ast_expr_var($1);
   }
   |
   expr PLUS expr {
-    $$ = ast_operation(PLUS, $1, $3);
+    $$ = ast_expr_operation(PLUS, $1, $3);
   }
   |
   expr MINUS expr {
-    $$ = ast_operation(MINUS, $1, $3);
+    $$ = ast_expr_operation(MINUS, $1, $3);
   }
   |
   expr MULT expr {
-    $$ = ast_operation(MULT, $1, $3);
+    $$ = ast_expr_operation(MULT, $1, $3);
   }
   |
   expr DIV expr {
-    $$ = ast_operation(DIV, $1, $3);
+    $$ = ast_expr_operation(DIV, $1, $3);
   }
   |
   expr MOD expr {
-    $$ = ast_operation(MOD, $1, $3);
+    $$ = ast_expr_operation(MOD, $1, $3);
   }
   ;
 %%

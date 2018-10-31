@@ -38,6 +38,7 @@ int yyline = 1;
 "=" { return ATTR; }
 
 "int" { return VARINT;}
+
 ";"   { return SEMICOLON; }
 
 [a-z][a-zA-z0-9]* {

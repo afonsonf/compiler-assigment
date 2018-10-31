@@ -7,6 +7,7 @@
 struct _Expr {
   enum {
     E_INTEGER,
+    E_Var,
     E_OPERATION
   } kind;
   union {
@@ -16,6 +17,7 @@ struct _Expr {
       struct _Expr* left;
       struct _Expr* right;
     } op; // for binary expressions
+    Var* var;
   } attr;
 };
 
@@ -125,8 +127,9 @@ typedef struct _Printf Printf;
 typedef struct _Scanf Scanf;
 
 // Constructor functions (see implementation in ast.c)
-Expr* ast_integer(int v);
-Expr* ast_operation(int operator, Expr* left, Expr* right);
+Expr* ast_expr_integer(int v);
+Expr* ast_expr_var(Var *var);
+Expr* ast_expr_operation(int operator, Expr* left, Expr* right);
 
 BoolExpr* ast_boolexpr_leaf(Expr* exp);
 BoolExpr* ast_boolexpr(int operator, Expr* left, Expr* right);

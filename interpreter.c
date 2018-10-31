@@ -9,6 +9,9 @@ void printExpr(Expr* expr, int tabs){
   if(expr == 0){
     printf("!!!!ERROR!!!!\n");
   }
+  else if(expr->kind == E_Var){
+    printVar(expr->attr.var,tabs);
+  }
   else if(expr->kind == E_INTEGER){
     printTab(tabs);
     printf("%d\n",expr->attr.value);
