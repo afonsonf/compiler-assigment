@@ -3,7 +3,6 @@
 
 void printTab(int n){
   for(int i=0;i<n-1;i++) printf("  ");
-  printf("|");
 }
 
 void printExpr(Expr* expr, int tabs){
@@ -88,6 +87,17 @@ void printBoolExpr(BoolExpr* expr, int tabs){
   }
 }
 
+void printVar(Var *var, int tabs){
+
+}
+
+void printAttr(Attrib *attrib, int tabs){
+
+}
+
+void printCmd(Cmd *cmd, int tabs){
+
+}
 
 int main(int argc, char** argv) {
   --argc; ++argv;

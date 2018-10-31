@@ -42,7 +42,7 @@ struct _BoolExpr{
 };
 
 struct _Var{
-  enum {INT, FLOAT} type;
+  enum {VARINT, VARFLOAT} type;
   char *name;
 };
 
