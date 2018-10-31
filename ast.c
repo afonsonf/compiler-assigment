@@ -60,18 +60,9 @@ Cmd* ast_cmd_attr(Attrib *cmdattrib){
   return node;
 }
 
-Var* ast_var(char *type, char *name){
+Var* ast_var(int type, char *name){
   Var* node = (Var*) malloc(sizeof(Var));
   node->name = name;
-  if(strcmp(type,"int")){
-    node->type = VARINT;
-  }
-  return node;
-}
-
-Var* ast_var_notype(char *name){
-  Var* node = (Var*) malloc(sizeof(Var));
-  node->name = name;
-  node->type = NOTYPE;
+  node->type = type;
   return node;
 }

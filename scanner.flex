@@ -37,14 +37,11 @@ int yyline = 1;
 
 "=" { return ATTR; }
 
-"int" { 
-    yylval.vartype = yytext; 
-    return VARINT;
-}
+"int" { return VARINT;}
 ";"   { return SEMICOLON; }
 
-[a-z]+[a-zA-z0-9_]* {
-    yylval.varname = yytext;
+[a-z][a-zA-z0-9]* {
+    yylval.varname = strdup(yytext);
     return VARNAME;
 }
 

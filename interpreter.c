@@ -120,7 +120,7 @@ int main(int argc, char** argv) {
     }
   } //  yyin = stdin
   if (yyparse() == 0) {
-    printBoolExpr(root,0);
+    printCmd(root,0);
   }
   return 0;
 

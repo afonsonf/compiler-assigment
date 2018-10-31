@@ -42,7 +42,7 @@ struct _BoolExpr{
 };
 
 struct _Var{
-  enum {VARINT, VARFLOAT, NOTYPE} type;
+  int type;
   char *name;
 };
 
@@ -132,8 +132,7 @@ BoolExpr* ast_boolexpr_leaf(Expr* exp);
 BoolExpr* ast_boolexpr(int operator, Expr* left, Expr* right);
 BoolExpr* ast_boolexpr_complex(int operator, BoolExpr* left, BoolExpr* right);
 
-Var* ast_var(char *type, char *name);
-Var* ast_var_notype(char *name);
+Var* ast_var(int type, char *name);
 VarList* ast_varlist(Var *var, VarList *next);
 
 Cmd* ast_cmd_attr(Attrib *cmdattrib);

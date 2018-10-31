@@ -4,6 +4,7 @@
   VARINT
   SEMICOLON
   ATTR
+  NOTYPE
 
 %token
   INT
@@ -38,7 +39,6 @@
 %union {
   int intValue;
   char* varname;
-  char* vartype;
   Expr* exprValue;
   BoolExpr* boolValue;
   Var* varvalue;
@@ -47,7 +47,6 @@
 
 }
 
-%type <vartype> VARINT
 %type <intValue> INT
 %type <exprValue> expr
 %type <boolValue> boolexpr
@@ -69,7 +68,7 @@ extern int yyline;
 extern char* yytext;
 extern FILE* yyin;
 extern void yyerror(const char* msg);
-BoolExpr* root;
+Cmd* root;
 
 }
 
@@ -88,11 +87,11 @@ attrib:
 
 VAR:
   VARINT VARNAME{
-    $$ = ast_var($1,$2);
+    $$ = ast_var(VARINT,$2);
   }
   |
   VARNAME{
-    $$ = ast_var_notype($1);
+    $$ = ast_var(NOTYPE, $1);
   }
 
 boolexpr:
