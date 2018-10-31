@@ -23,14 +23,14 @@ Expr* ast_operation
 
 BoolExpr* ast_boolexpr_leaf(Expr* exp){
   BoolExpr* node = (BoolExpr*) malloc(sizeof(BoolExpr));
-  node->kind = E_Expr;
+  node->kind = E_Bool;
   node->attr.value = exp;
   return node;
 }
 
 BoolExpr* ast_boolexpr(int operator, Expr* left, Expr* right){
   BoolExpr* node = (BoolExpr*) malloc(sizeof(BoolExpr));
-  node->kind = E_Bool;
+  node->kind = E_BoolOp;
   node->attr.op.operator = operator;
   node->attr.op.left = left;
   node->attr.op.right = right;

@@ -15,7 +15,12 @@
   LESSEQUAL
   GREATEQUAL
 
+%token
+  ANDLOGIC
+  ORLOGIC
+
 // Operator associativity & precedence
+%left ANDLOGIC ORLOGIC
 %left EQUALS DIFF LESS GREAT LESSEQUAL GREATEQUAL
 %left PLUS MINUS
 %left MULT DIV MOD
@@ -60,6 +65,21 @@ boolexpr:
   |
   expr EQUALS expr {
     $$ = ast_boolexpr(EQUALS,$1,$3);
+  }
+  expr DIFF expr {
+    $$ = ast_boolexpr(DIFF,$1,$3);
+  }
+  expr LESS expr {
+    $$ = ast_boolexpr(LESS,$1,$3);
+  }
+  expr GREAT expr {
+    $$ = ast_boolexpr(GREAT,$1,$3);
+  }
+  expr LESSEQUAL expr {
+    $$ = ast_boolexpr(LESSEQUAL,$1,$3);
+  }
+  expr GREATEQUAL expr {
+    $$ = ast_boolexpr(GREATEQUAL,$1,$3);
   }
 
 expr: 

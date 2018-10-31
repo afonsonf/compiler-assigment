@@ -39,8 +39,6 @@ struct _BoolExpr{
       struct _BoolExpr* right;
     } complex; 
   } attr;
-  char *s;
-  struct _VarList *varlist;
 };
 
 struct _Var{
@@ -156,5 +154,12 @@ If* ast_if_first(BoolExpr* boolexpr, CmdList *cmdlist, If *next);
 If* ast_if_elseif(BoolExpr* boolexpr, CmdList *cmdlist, If *next);
 If* ast_if_else(CmdList *cmdlist);
 
-For* ast_for()
+For* ast_for(Attrib *init, BoolExpr *boolexpr, Attrib *inc, CmdList *cmdlist);
+
+While* ast_while(BoolExpr* boolexpr, CmdList *cmdlist);
+
+Printf* ast_printf(char* s, VarList *varlist);
+
+Scanf* ast_scanf(char* s, VarList *varlist);
+
 #endif
