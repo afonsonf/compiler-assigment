@@ -66,20 +66,33 @@ boolexpr:
   expr EQUALS expr {
     $$ = ast_boolexpr(EQUALS,$1,$3);
   }
+  |
   expr DIFF expr {
     $$ = ast_boolexpr(DIFF,$1,$3);
   }
+  |
   expr LESS expr {
     $$ = ast_boolexpr(LESS,$1,$3);
   }
+  |
   expr GREAT expr {
     $$ = ast_boolexpr(GREAT,$1,$3);
   }
+  |
   expr LESSEQUAL expr {
     $$ = ast_boolexpr(LESSEQUAL,$1,$3);
   }
+  |
   expr GREATEQUAL expr {
     $$ = ast_boolexpr(GREATEQUAL,$1,$3);
+  }
+  |
+  boolexpr ANDLOGIC boolexpr {
+    $$ = ast_boolexpr_complex(ANDLOGIC, $1, $3);
+  }
+  |
+  boolexpr ORLOGIC boolexpr {
+    $$ = ast_boolexpr_complex(ORLOGIC, $1, $3);
   }
 
 expr: 
