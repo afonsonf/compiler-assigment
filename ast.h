@@ -44,10 +44,6 @@ struct _BoolExpr{
 struct _Var{
   enum {INT, FLOAT} type;
   char *name;
-  union {
-    int valint;
-    float valfloat;
-  } attr;
 };
 
 struct _VarList{
@@ -136,7 +132,8 @@ BoolExpr* ast_boolexpr_leaf(Expr* exp);
 BoolExpr* ast_boolexpr(int operator, Expr* left, Expr* right);
 BoolExpr* ast_boolexpr_complex(int operator, BoolExpr* left, BoolExpr* right);
 
-Var* ast_var(char *name, char *type);
+Var* ast_var(char *type, char *name);
+Var* ast_var(char *name);
 VarList* ast_varlist(Var *var, VarList *next);
 
 Cmd* ast_cmd_attr(Attrib *cmdattrib);

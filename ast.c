@@ -59,3 +59,18 @@ Cmd* ast_cmd_attr(Attrib *cmdattrib){
   node->attr.cmdattr = cmdattrib;
   return node;
 }
+
+Var* ast_var(char *type, char *name){
+  Var* node = (Var*) malloc(sizeof(Var));
+  node->name = name;
+  if(strcmp(type,"INT")){
+    node->type = INT;
+  }
+  return node;
+}
+
+Var* ast_var(char *name){
+  Var* node = (Var*) malloc(sizeof(Var));
+  node->name = name;
+  return node;
+}
