@@ -200,5 +200,3 @@ Scanf* ast_scanf(char* s, VarList *varlist){
   node->varlist = varlist;
   return node;
 }
-=======
->>>>>>> d86c4267ad003741247c136f48d9361e546970ba
