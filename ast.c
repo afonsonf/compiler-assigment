@@ -46,3 +46,31 @@ BoolExpr* ast_boolexpr_complex(int operator, BoolExpr* left, BoolExpr* right){
   return node;
 }
 
+Attrib* ast_attrib(Var *var, Expr *value){
+  Attrib* node = (Attrib*) malloc(sizeof(Attrib));
+  node->var = var;
+  node->value = value;
+  return node;
+}
+
+Cmd* ast_cmd_attr(Attrib *cmdattrib){
+  Cmd* node = (Cmd*) malloc(sizeof(Cmd));
+  node->type = E_Attrib;
+  node->attr.cmdattr = cmdattrib;
+  return node;
+}
+
+Var* ast_var(char *type, char *name){
+  Var* node = (Var*) malloc(sizeof(Var));
+  node->name = name;
+  if(strcmp(type,"INT")){
+    node->type = INT;
+  }
+  return node;
+}
+
+Var* ast_var(char *name){
+  Var* node = (Var*) malloc(sizeof(Var));
+  node->name = name;
+  return node;
+}
