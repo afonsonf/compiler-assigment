@@ -24,7 +24,10 @@ int yyline = 1;
 "<"  { return LESS; }
 ">"  { return GREAT; }
 "<=" { return LESSEQUAL; }
-">=" {return GREATEQUAL; }
+">=" { return GREATEQUAL; }
+
+"&&" { return ANDLOGIC; }
+"||" { return ORLOGIC; }
 
 "+" { return PLUS; }
 "-" { return MINUS; }
