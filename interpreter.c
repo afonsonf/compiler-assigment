@@ -88,8 +88,8 @@ void printBoolExpr(BoolExpr* expr, int tabs){
 }
 
 void printVar(Var *var, int tabs){
-  printTab(tabs);
   if(var->type == VARINT){
+    printTab(tabs);
     printf("int\n");
   }
   printTab(tabs);
@@ -97,11 +97,17 @@ void printVar(Var *var, int tabs){
 }
 
 void printAttr(Attrib *attrib, int tabs){
-  
+  printTab(tabs);
+  printf("=\n");
+  printVar(attrib->var, tabs+2);
+  printf("\n");
+  printExpr(attrib->value,tabs+2);
 }
 
 void printCmd(Cmd *cmd, int tabs){
-
+  if(cmd->type == E_Attrib){
+    printAttr(cmd->attr.cmdattr,tabs);
+  }
 }
 
 int main(int argc, char** argv) {

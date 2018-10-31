@@ -69,8 +69,9 @@ Var* ast_var(char *type, char *name){
   return node;
 }
 
-Var* ast_var(char *name){
+Var* ast_var_notype(char *name){
   Var* node = (Var*) malloc(sizeof(Var));
   node->name = name;
+  node->type = NOTYPE;
   return node;
 }

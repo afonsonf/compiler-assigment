@@ -1,6 +1,12 @@
 // Tokens
-%token 
-  INT  
+%token
+  VARNAME
+  VARINT
+  SEMICOLON
+  ATTR
+
+%token
+  INT
   PLUS
   MINUS
   MULT
@@ -33,7 +39,7 @@
   int intValue;
   char* varname;
   char* vartype;
-  Expr* exprValue; 
+  Expr* exprValue;
   BoolExpr* boolValue;
   Var* varvalue;
   Attrib *attribvalue;
@@ -77,16 +83,16 @@ cmd:
 
 attrib:
   VAR ATTR expr SEMICOLON{
-    $$ = ast_attrib($2,$4);
+    $$ = ast_attrib($1,$3);
   }
 
-VAR: 
+VAR:
   VARINT VARNAME{
     $$ = ast_var($1,$2);
   }
   |
   VARNAME{
-    $$ = ast_var($1);
+    $$ = ast_var_notype($1);
   }
 
 boolexpr:
@@ -126,34 +132,33 @@ boolexpr:
     $$ = ast_boolexpr_complex(ORLOGIC, $1, $3);
   }
 
-expr: 
-  INT { 
-    $$ = ast_integer($1); 
+expr:
+  INT {
+    $$ = ast_integer($1);
   }
-  | 
-  expr PLUS expr { 
-    $$ = ast_operation(PLUS, $1, $3); 
-  } 
   |
-  expr MINUS expr { 
-    $$ = ast_operation(MINUS, $1, $3); 
-  } 
+  expr PLUS expr {
+    $$ = ast_operation(PLUS, $1, $3);
+  }
   |
-  expr MULT expr { 
-    $$ = ast_operation(MULT, $1, $3); 
-  } 
+  expr MINUS expr {
+    $$ = ast_operation(MINUS, $1, $3);
+  }
   |
-  expr DIV expr { 
-    $$ = ast_operation(DIV, $1, $3); 
-  } 
+  expr MULT expr {
+    $$ = ast_operation(MULT, $1, $3);
+  }
   |
-  expr MOD expr { 
-    $$ = ast_operation(MOD, $1, $3); 
-  } 
+  expr DIV expr {
+    $$ = ast_operation(DIV, $1, $3);
+  }
+  |
+  expr MOD expr {
+    $$ = ast_operation(MOD, $1, $3);
+  }
   ;
 %%
 
 void yyerror(const char* err) {
   printf("Line %d: %s - '%s'\n", yyline, err, yytext  );
 }
-
