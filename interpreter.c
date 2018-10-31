@@ -16,7 +16,7 @@ void printExpr(Expr* expr, int tabs){
   else if(expr->kind == E_OPERATION){
     printTab(tabs);
     switch (expr->attr.op.operator) {
-      case PLUS: 
+      case PLUS:
         printf("+\n");
         break;
       case MINUS:
@@ -30,7 +30,7 @@ void printExpr(Expr* expr, int tabs){
         break;
       case MOD:
         printf("%c\n",'%');
-        break;   
+        break;
       default: yyerror("Unknown operator!");
     }
     printExpr(expr->attr.op.left, tabs+2);
@@ -48,19 +48,19 @@ void printBoolExpr(BoolExpr* expr, int tabs){
   else if(expr->kind == E_BoolOp){
     printTab(tabs);
     switch (expr->attr.op.operator) {
-      case EQUALS: 
+      case EQUALS:
         printf("==\n");
         break;
-      case DIFF: 
+      case DIFF:
         printf("!=\n");
         break;
-      case LESS: 
+      case LESS:
         printf("<\n");
         break;
-      case GREAT: 
+      case GREAT:
         printf(">\n");
         break;
-      case LESSEQUAL: 
+      case LESSEQUAL:
         printf("<=\n");
         break;
       case GREATEQUAL:
@@ -74,7 +74,7 @@ void printBoolExpr(BoolExpr* expr, int tabs){
   else if(expr->kind == E_Complex){
     printTab(tabs);
     switch(expr->attr.complex.operator) {
-      case ANDLOGIC: 
+      case ANDLOGIC:
         printf("&&\n");
         break;
       case ORLOGIC:
@@ -88,11 +88,16 @@ void printBoolExpr(BoolExpr* expr, int tabs){
 }
 
 void printVar(Var *var, int tabs){
-
+  printTab(tabs);
+  if(var->type == VARINT){
+    printf("int\n");
+  }
+  printTab(tabs);
+  printf("%s\n", var->name);
 }
 
 void printAttr(Attrib *attrib, int tabs){
-
+  
 }
 
 void printCmd(Cmd *cmd, int tabs){
