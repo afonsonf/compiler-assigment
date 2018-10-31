@@ -90,7 +90,7 @@ struct _If{
   enum {IF, IFELSE, ELSE} type;
   struct _BoolExpr *boolexpr;
   struct _CmdList *cmdlist;
-  struct _if *next;
+  struct _If *next;
 };
 
 struct _For{
@@ -141,6 +141,20 @@ BoolExpr* ast_boolexpr_complex(int operator, BoolExpr* left, BoolExpr* right);
 Var* ast_var(char *name, char *type);
 VarList* ast_varlist(Var *var, VarList *next);
 
-//Cmd* ast_cmd_attr()
+Cmd* ast_cmd_attr(Attrib *cmdattrib);
+Cmd* ast_cmd_if(If *cmdif);
+Cmd* ast_cmd_for(For *cmdfor);
+Cmd* ast_cmd_while(While *cmdwhile);
+Cmd* ast_cmd_printf(Printf *cmdprintf);
+Cmd* ast_cmd_scanf(Scanf *cmdscanf);
 
+CmdList* ast_cmdlist(Cmd *cmd, CmdList *next);
+
+Attrib* ast_attrib(Var *var, Expr *value);
+
+If* ast_if_first(BoolExpr* boolexpr, CmdList *cmdlist, If *next);
+If* ast_if_elseif(BoolExpr* boolexpr, CmdList *cmdlist, If *next);
+If* ast_if_else(CmdList *cmdlist);
+
+For* ast_for()
 #endif
