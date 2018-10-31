@@ -35,6 +35,21 @@ int yyline = 1;
 "/" { return DIV; }
 "%" { return MOD; }
 
+"=" { return ATTR; }
+
+"int" { 
+    yylval.vartype = yytext; 
+    return VARINT;
+}
+";"   { return SEMICOLON; }
+
+[a-z]+[a-zA-z0-9_]* {
+    yylval.varname = yytext;
+    return VARNAME;
+}
+
+
+
 .  { yyerror("unexpected character"); }
 %%
 

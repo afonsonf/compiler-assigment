@@ -31,13 +31,25 @@
 // Types/values in association to grammar symbols.
 %union {
   int intValue;
+  char* varname;
+  char* vartype;
   Expr* exprValue; 
   BoolExpr* boolValue;
+  Var* varvalue;
+  Attrib *attribvalue;
+  Cmd *cmdvalue;
+
 }
 
+%type <vartype> VARINT
 %type <intValue> INT
 %type <exprValue> expr
 %type <boolValue> boolexpr
+%type <varvalue> VAR
+%type <attribvalue> attrib
+%type <varname> VARNAME
+%type <cmdvalue> cmd
+
 
 // Use "%code requires" to make declarations go
 // into both parser.c and parser.h
@@ -56,7 +68,26 @@ BoolExpr* root;
 }
 
 %%
-program: boolexpr { root = $1; }
+program: cmd { root = $1; }
+
+cmd:
+  attrib {
+    $$ = ast_cmd_attr($1);
+  }
+
+attrib:
+  VAR ATTR expr SEMICOLON{
+    $$ = ast_attrib($2,$4);
+  }
+
+VAR: 
+  VARINT VARNAME{
+    $$ = ast_var($1,$2);
+  }
+  |
+  VARNAME{
+    $$ = ast_var($1);
+  }
 
 boolexpr:
   expr {
