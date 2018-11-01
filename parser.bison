@@ -2,6 +2,7 @@
 
 %token
   SEMICOLON
+  COMMA
   OPENPAR
   CLOSEPAR
   OPENCHAV
@@ -9,9 +10,11 @@
 
 %token 
   WHILE
+  PRINTF
 
 %token
   VARNAME
+  STRING
   VARINT
   ATTR
   NOTYPE
@@ -50,25 +53,34 @@
 %union {
   int intValue;
   char* varname;
+  char* strvalue;
+
   Expr* exprValue;
   BoolExpr* boolValue;
   Var* varvalue;
+  VarList *varlistvalue;
+
   Attrib *attribvalue;
+  While *whilevalue;
+  Printf *printfvalue;
+
   Cmd *cmdvalue;
   CmdList *cmdlistvalue;
-  While *whilevalue;
 }
 
 %type <intValue> INT
+%type <strvalue> STRING
 %type <varname> VARNAME
 %type <varvalue> VARTYPE
 %type <varvalue> VARNOTYPE
+%type <varlistvalue> varlist
 
 %type <exprValue> expr
 %type <boolValue> boolexpr
 
 %type <attribvalue> attrib
 %type <whilevalue> while
+%type <printfvalue> printf
 
 %type <cmdvalue> cmd
 %type <cmdlistvalue> cmdlist
@@ -109,6 +121,10 @@ cmd:
   while {
     $$ = ast_cmd_while($1);
   }
+  |
+  printf {
+    $$ = ast_cmd_printf($1);
+  }
 
 while:
   WHILE OPENPAR boolexpr CLOSEPAR OPENCHAV cmdlist CLOSECHAV {
@@ -119,6 +135,15 @@ while:
     $$ = ast_while($3,ast_cmdlist($5,NULL));
   }
 
+printf:
+  PRINTF OPENPAR STRING COMMA varlist CLOSEPAR SEMICOLON {
+    $$ = ast_printf($3, $5);
+  }
+  |
+  PRINTF OPENPAR STRING CLOSEPAR SEMICOLON {
+    $$ = ast_printf($3, NULL);
+  }
+
 attrib:
   VARTYPE ATTR expr SEMICOLON{
     $$ = ast_attrib($1,$3);
@@ -126,6 +151,15 @@ attrib:
   |
   VARNOTYPE ATTR expr SEMICOLON{
     $$ = ast_attrib($1,$3);
+  }
+
+varlist:
+  VARNOTYPE COMMA varlist {
+    $$ = ast_varlist($1,$3);
+  }
+  |
+  VARNOTYPE{
+    $$ = ast_varlist($1, NULL);
   }
 
 VARTYPE:

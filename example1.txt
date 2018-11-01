@@ -4,6 +4,11 @@ a = a + 2;
 while(a == 2){
     int b = 3;
     while(1) b =1;
+    printf("a");
 }
 
 while(a) b = 2;
+
+printf("oi",a);
+
+printf("oipoi",a,b,c);

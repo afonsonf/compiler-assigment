@@ -4,11 +4,14 @@
 void printTab(int n);
 
 void printVar(Var *var, int tabs);
+void printVarList(VarList *varlist, int tabs);
+void printString(char *str, int tabs);
 void printExpr(Expr* expr, int tabs);
 void printBoolExpr(BoolExpr* expr, int tabs);
 
 void printAttr(Attrib *attrib, int tabs);
 void printWhile(While *cmdwhile, int tabs);
+void printPrintf(Printf *cmdprintf, int tabs);
 
 void printCmd(Cmd *cmd, int tabs);
 void printCmdList(CmdList *cmdlist, int tabs);
@@ -27,11 +30,20 @@ void printVar(Var *var, int tabs){
   printf("%s\n", var->name);
 }
 
-void printExpr(Expr* expr, int tabs){
-  if(expr == 0){
-    printf("!!!!ERROR!!!!\n");
+void printVarList(VarList *varlist, int tabs){
+  while(varlist){
+    printVar(varlist->var,tabs);
+    varlist = varlist->next;
   }
-  else if(expr->kind == E_VAR){
+}
+
+void printString(char *str, int tabs){
+  printTab(tabs);
+  printf("%s\n", str);
+}
+
+void printExpr(Expr* expr, int tabs){
+  if(expr->kind == E_VAR){
     printVar(expr->attr.var,tabs);
   }
   else if(expr->kind == E_INTEGER){
@@ -64,10 +76,7 @@ void printExpr(Expr* expr, int tabs){
 }
 
 void printBoolExpr(BoolExpr* expr, int tabs){
-  if(expr == 0){
-    printf("!!!!ERROR!!!!\n");
-  }
-  else if(expr->kind == E_Bool){
+  if(expr->kind == E_Bool){
     printExpr(expr->attr.value,tabs);
   }
   else if(expr->kind == E_BoolOp){
@@ -114,7 +123,7 @@ void printBoolExpr(BoolExpr* expr, int tabs){
 
 void printAttr(Attrib *attrib, int tabs){
   printTab(tabs);
-  printf("=\n");
+  printf("attrib\n");
   printVar(attrib->var, tabs+2);
   printf("\n");
   printExpr(attrib->value,tabs+2);
@@ -128,12 +137,29 @@ void printWhile(While *cmdwhile, int tabs){
   printCmdList(cmdwhile->cmdlist,tabs+2);
 }
 
+void printPrintf(Printf *cmdprintf, int tabs){
+  printTab(tabs);
+  printf("printf\n");
+  printString(cmdprintf->s, tabs+2);
+  printf("\n");
+  printVarList(cmdprintf->varlist,tabs+2);
+}
+
 void printCmd(Cmd *cmd, int tabs){
   if(cmd->type == E_Attrib){
     printAttr(cmd->attr.cmdattr,tabs);
   }
+  else if(cmd->type == E_If){
+
+  }
   else if(cmd->type == E_While){
     printWhile(cmd->attr.cmdwhile,tabs);
+  }
+  else if(cmd->type == E_Printf){
+    printPrintf(cmd->attr.cmdprintf,tabs);
+  }
+  else if(cmd->type == E_Scanf){
+
   }
 }
 
