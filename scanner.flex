@@ -46,7 +46,7 @@ int yyline = 1;
 "{"  { return OPENCHAV; }
 "}"  { return CLOSECHAV; }
 
-"\"".*""\" {
+"\""[^\"]*""\" {
     yylval.strvalue = strdup(yytext);
     return STRING;
 }
