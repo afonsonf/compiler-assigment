@@ -53,6 +53,8 @@ int yyline = 1;
 
 "while"  { return WHILE; }
 "printf" { return PRINTF; }
+"if"     { return IF; }
+"else"   {return ELSE; }
 
 [a-z][a-zA-z0-9]* {
     yylval.varname = strdup(yytext);

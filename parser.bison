@@ -11,6 +11,8 @@
 %token 
   WHILE
   PRINTF
+  IF
+  ELSE
 
 %token
   VARNAME
@@ -63,6 +65,7 @@
   Attrib *attribvalue;
   While *whilevalue;
   Printf *printfvalue;
+  If     *ifvalue;
 
   Cmd *cmdvalue;
   CmdList *cmdlistvalue;
@@ -82,8 +85,13 @@
 %type <whilevalue> while
 %type <printfvalue> printf
 
+%type <cmdlistvalue> unmatched
+%type <cmdlistvalue> statement
+%type <cmdlistvalue> matched
+
 %type <cmdvalue> cmd
 %type <cmdlistvalue> cmdlist
+%type <cmdlistvalue> cmdblock
 
 // Use "%code requires" to make declarations go
 // into both parser.c and parser.h
@@ -102,7 +110,28 @@ CmdList* root;
 }
 
 %%
-program: cmdlist { root = $1; }
+program: statement { root = $1; }
+
+statement:
+  matched
+  |
+  unmatched
+
+matched:
+  IF OPENPAR boolexpr CLOSEPAR matched ELSE matched{
+
+  }
+  |
+  cmdblock
+
+unmatched:
+  IF OPENPAR boolexpr CLOSEPAR statement{
+
+  }
+  |
+  IF OPENPAR boolexpr matched ELSE unmatched{
+    
+  }
 
 cmdlist:
   cmd cmdlist {
@@ -126,13 +155,18 @@ cmd:
     $$ = ast_cmd_printf($1);
   }
 
-while:
-  WHILE OPENPAR boolexpr CLOSEPAR OPENCHAV cmdlist CLOSECHAV {
-    $$ = ast_while($3,$6);
+cmdblock:
+  cmd {
+    $$ = ast_cmdlist($1,NULL);
   }
   |
-  WHILE OPENPAR boolexpr CLOSEPAR cmd {
-    $$ = ast_while($3,ast_cmdlist($5,NULL));
+  OPENCHAV cmdlist CLOSECHAV {
+    $$ = $2;
+  }
+
+while:
+  WHILE OPENPAR boolexpr CLOSEPAR cmdblock {
+    $$ = ast_while($3,$5);
   }
 
 printf:

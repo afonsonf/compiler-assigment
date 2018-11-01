@@ -122,28 +122,9 @@ Attrib* ast_attrib(Var *var, Expr *value){
   return node;
 }
 
-If* ast_if_first(BoolExpr* boolexpr, CmdList *cmdlist, If *next){
+If* ast_if(CmdList *cmdlist){
   If* node = (If*) malloc(sizeof(If));
-  node->type = IF; //Acho que eh isso fon - APAGAR
-  node->cmdlist = cmdlist;
-  node->boolexpr = boolexpr;
-  node->next = next;
-  return node;
-}
-
-If* ast_if_elseif(BoolExpr* boolexpr, CmdList *cmdlist, If *next){
-  If* node = (If*) malloc(sizeof(If));
-  node->type = ELSEIF; //Acho que eh isso fon - APAGAR
-  node->cmdlist = cmdlist;
-  node->boolexpr = boolexpr;
-  node->next = next;
-  return node;
-}
-
-If* ast_if_else(CmdList *cmdlist){
-  If* node = (If*) malloc(sizeof(If));
-  node->type = ELSE; //Acho que eh isso fon - APAGAR
-  node->cmdlist = cmdlist;
+  //todo
   return node;
 }
 

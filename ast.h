@@ -57,6 +57,7 @@ struct _Cmd {
   enum {
     E_Attrib,
     E_If,
+    E_If_child,
     E_For,
     E_While,
     E_Printf,
@@ -83,10 +84,8 @@ struct _Attrib{
 };
 
 struct _If{
-  enum {IF, ELSEIF, ELSE} type;
-  struct _BoolExpr *boolexpr;
-  struct _CmdList *cmdlist;
-  struct _If *next;
+  enum {IFTYPE, ELSEIFTYPE} type;
+  
 };
 
 struct _For{
@@ -121,6 +120,7 @@ typedef struct _Cmd Cmd;
 typedef struct _CmdList CmdList;
 typedef struct _Attrib Attrib;
 typedef struct _If If;
+typedef struct _If_child If_child;
 typedef struct _For For;
 typedef struct _While While;
 typedef struct _Printf Printf;
@@ -149,9 +149,7 @@ CmdList* ast_cmdlist(Cmd *cmd, CmdList *next);
 
 Attrib* ast_attrib(Var *var, Expr *value);
 
-If* ast_if_first(BoolExpr* boolexpr, CmdList *cmdlist, If *next);
-If* ast_if_elseif(BoolExpr* boolexpr, CmdList *cmdlist, If *next);
-If* ast_if_else(CmdList *cmdlist);
+If* ast_if(CmdList* cmdlist);
 
 For* ast_for(Attrib *init, BoolExpr *boolexpr, Attrib *inc, CmdList *cmdlist);
 
