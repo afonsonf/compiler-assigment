@@ -153,25 +153,6 @@ attrib:
     $$ = ast_attrib($1,$3);
   }
 
-varlist:
-  VARNOTYPE COMMA varlist {
-    $$ = ast_varlist($1,$3);
-  }
-  |
-  VARNOTYPE{
-    $$ = ast_varlist($1, NULL);
-  }
-
-VARTYPE:
-  VARINT VARNAME{
-    $$ = ast_var(VARINT,$2);
-  }
-  
-VARNOTYPE:
-  VARNAME{
-    $$ = ast_var(NOTYPE, $1);
-  }
-
 boolexpr:
   expr {
     $$ = ast_boolexpr_leaf($1);
@@ -236,6 +217,25 @@ expr:
   |
   expr MOD expr {
     $$ = ast_expr_operation(MOD, $1, $3);
+  }
+
+varlist:
+  VARNOTYPE COMMA varlist {
+    $$ = ast_varlist($1,$3);
+  }
+  |
+  VARNOTYPE{
+    $$ = ast_varlist($1, NULL);
+  }
+
+VARTYPE:
+  VARINT VARNAME{
+    $$ = ast_var(VARINT,$2);
+  }
+  
+VARNOTYPE:
+  VARNAME{
+    $$ = ast_var(NOTYPE, $1);
   }
   ;
 %%
