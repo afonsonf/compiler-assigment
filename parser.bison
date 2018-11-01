@@ -1,8 +1,18 @@
 // Tokens
+
+%token
+  SEMICOLON
+  OPENPAR
+  CLOSEPAR
+  OPENCHAV
+  CLOSECHAV
+
+%token 
+  WHILE
+
 %token
   VARNAME
   VARINT
-  SEMICOLON
   ATTR
   NOTYPE
 
@@ -27,6 +37,7 @@
   ORLOGIC
 
 // Operator associativity & precedence
+%left SEMICOLON
 %left ANDLOGIC ORLOGIC
 %left EQUALS DIFF LESS GREAT LESSEQUAL GREATEQUAL
 %left PLUS MINUS
@@ -44,17 +55,23 @@
   Var* varvalue;
   Attrib *attribvalue;
   Cmd *cmdvalue;
-
+  CmdList *cmdlistvalue;
+  While *whilevalue;
 }
 
 %type <intValue> INT
+%type <varname> VARNAME
+%type <varvalue> VARTYPE
+%type <varvalue> VARNOTYPE
+
 %type <exprValue> expr
 %type <boolValue> boolexpr
-%type <varvalue> VAR
-%type <attribvalue> attrib
-%type <varname> VARNAME
-%type <cmdvalue> cmd
 
+%type <attribvalue> attrib
+%type <whilevalue> while
+
+%type <cmdvalue> cmd
+%type <cmdlistvalue> cmdlist
 
 // Use "%code requires" to make declarations go
 // into both parser.c and parser.h
@@ -68,28 +85,55 @@ extern int yyline;
 extern char* yytext;
 extern FILE* yyin;
 extern void yyerror(const char* msg);
-Cmd* root;
+CmdList* root;
 
 }
 
 %%
-program: cmd { root = $1; }
+program: cmdlist { root = $1; }
+
+cmdlist:
+  cmd cmdlist {
+    $$ = ast_cmdlist($1,$2);
+  }
+  |
+  cmd {
+    $$ = ast_cmdlist($1,NULL);
+  }
 
 cmd:
   attrib {
     $$ = ast_cmd_attr($1);
   }
+  |
+  while {
+    $$ = ast_cmd_while($1);
+  }
+
+while:
+  WHILE OPENPAR boolexpr CLOSEPAR OPENCHAV cmdlist CLOSECHAV {
+    $$ = ast_while($3,$6);
+  }
+  |
+  WHILE OPENPAR boolexpr CLOSEPAR cmd {
+    $$ = ast_while($3,ast_cmdlist($5,NULL));
+  }
 
 attrib:
-  VAR ATTR expr SEMICOLON{
+  VARTYPE ATTR expr SEMICOLON{
+    $$ = ast_attrib($1,$3);
+  }
+  |
+  VARNOTYPE ATTR expr SEMICOLON{
     $$ = ast_attrib($1,$3);
   }
 
-VAR:
+VARTYPE:
   VARINT VARNAME{
     $$ = ast_var(VARINT,$2);
   }
-  |
+  
+VARNOTYPE:
   VARNAME{
     $$ = ast_var(NOTYPE, $1);
   }
@@ -136,7 +180,7 @@ expr:
     $$ = ast_expr_integer($1);
   }
   |
-  VAR {
+  VARNOTYPE {
     $$ = ast_expr_var($1);
   }
   |

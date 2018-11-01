@@ -1,6 +1,19 @@
 #include <stdio.h>
 #include "parser.h"
 
+void printTab(int n);
+
+void printVar(Var *var, int tabs);
+void printExpr(Expr* expr, int tabs);
+void printBoolExpr(BoolExpr* expr, int tabs);
+
+void printAttr(Attrib *attrib, int tabs);
+void printWhile(While *cmdwhile, int tabs);
+
+void printCmd(Cmd *cmd, int tabs);
+void printCmdList(CmdList *cmdlist, int tabs);
+
+
 void printTab(int n){
   for(int i=0;i<n-1;i++) printf("  ");
 }
@@ -107,9 +120,31 @@ void printAttr(Attrib *attrib, int tabs){
   printExpr(attrib->value,tabs+2);
 }
 
+void printWhile(While *cmdwhile, int tabs){
+  printTab(tabs);
+  printf("while\n");
+  printBoolExpr(cmdwhile->boolexpr, tabs+2);
+  printf("\n");
+  printCmdList(cmdwhile->cmdlist,tabs+2);
+}
+
 void printCmd(Cmd *cmd, int tabs){
   if(cmd->type == E_Attrib){
     printAttr(cmd->attr.cmdattr,tabs);
+  }
+  else if(cmd->type == E_While){
+    printWhile(cmd->attr.cmdwhile,tabs);
+  }
+}
+
+void printCmdList(CmdList *cmdlist, int tabs){
+  while(cmdlist){
+    printCmd(cmdlist->value,tabs);
+    cmdlist = cmdlist->next;
+    if(cmdlist){
+      printTab(tabs);
+      printf("---\n");
+    }
   }
 }
 
@@ -123,7 +158,7 @@ int main(int argc, char** argv) {
     }
   } //  yyin = stdin
   if (yyparse() == 0) {
-    printCmd(root,0);
+      printCmdList(root,0);
   }
   return 0;
 

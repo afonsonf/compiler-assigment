@@ -39,7 +39,13 @@ int yyline = 1;
 
 "int" { return VARINT;}
 
-";"   { return SEMICOLON; }
+";" { return SEMICOLON; }
+"(" { return OPENPAR; }
+")" { return CLOSEPAR; }
+"{" { return OPENCHAV; }
+"}" { return CLOSECHAV; }
+
+"while" {return WHILE; }
 
 [a-z][a-zA-z0-9]* {
     yylval.varname = strdup(yytext);

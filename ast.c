@@ -17,8 +17,7 @@ Expr* ast_expr_var(Var *var){
   return node;
 }
 
-Expr* ast_expr_operation
-(int operator, Expr* left, Expr* right) {
+Expr* ast_expr_operation(int operator, Expr* left, Expr* right) {
   Expr* node = (Expr*) malloc(sizeof(Expr));
   node->kind = E_OPERATION;
   node->attr.op.operator = operator;
@@ -53,48 +52,10 @@ BoolExpr* ast_boolexpr_complex(int operator, BoolExpr* left, BoolExpr* right){
   return node;
 }
 
-Attrib* ast_attrib(Var *var, Expr *value){
-  Attrib* node = (Attrib*) malloc(sizeof(Attrib));
-  node->var = var;
-  node->value = value;
-  return node;
-}
-
-Cmd* ast_cmd_attr(Attrib *cmdattrib){
-  Cmd* node = (Cmd*) malloc(sizeof(Cmd));
-  node->type = E_Attrib;
-  node->attr.cmdattr = cmdattrib;
-  return node;
-}
-
 Var* ast_var(int type, char *name){
   Var* node = (Var*) malloc(sizeof(Var));
   node->name = name;
   node->type = type;
-  return node;
-}
-<<<<<<< HEAD
-
-Expr* ast_expr_var(Vast_varlistar *var){
-  Expr* node = (Expr*) malloc(sizeof(Expr));
-  node->kind = E_VAR;
-  node->attr.var = var;
-  return node;
-}
-
-//Comecei aqui: possiveis erros devido a stress por causa da APT - APAGAR
-Expr* ast_expr_integer(int v){
-  Expr* node = (Expr*) malloc(sizeof(Expr));
-  node->kind = E_INTEGER;
-  node->value = v;
-  return node;
-}
-
-Expr* ast_expr_operation(int operator, Expr* left, Expr* right){
-  Expr* node = (Expr*) malloc(sizeof(Expr));
-  node->attr.operator = operator;
-  node->attr.left = left;
-  node->attr.right = right;
   return node;
 }
 
@@ -102,6 +63,13 @@ VarList* ast_varlist(Var *var, VarList *next){
   VarList* node = (VarList*) malloc(sizeof(VarList));
   node->var = var;
   node->next = next; // fon isso nao me parece certo, se for linked list, verificar pls - APAGAR
+  return node;
+}
+
+Cmd* ast_cmd_attr(Attrib *cmdattrib){
+  Cmd* node = (Cmd*) malloc(sizeof(Cmd));
+  node->type = E_Attrib;
+  node->attr.cmdattr = cmdattrib;
   return node;
 }
 
@@ -147,6 +115,13 @@ CmdList* ast_cmdlist(Cmd *cmd, CmdList *next){
   return node;
 }
 
+Attrib* ast_attrib(Var *var, Expr *value){
+  Attrib* node = (Attrib*) malloc(sizeof(Attrib));
+  node->var = var;
+  node->value = value;
+  return node;
+}
+
 If* ast_if_first(BoolExpr* boolexpr, CmdList *cmdlist, If *next){
   If* node = (If*) malloc(sizeof(If));
   node->type = IF; //Acho que eh isso fon - APAGAR
@@ -155,20 +130,20 @@ If* ast_if_first(BoolExpr* boolexpr, CmdList *cmdlist, If *next){
   node->next = next;
   return node;
 }
+
 If* ast_if_elseif(BoolExpr* boolexpr, CmdList *cmdlist, If *next){
   If* node = (If*) malloc(sizeof(If));
-  node->type = IFELSE; //Acho que eh isso fon - APAGAR
+  node->type = ELSEIF; //Acho que eh isso fon - APAGAR
   node->cmdlist = cmdlist;
   node->boolexpr = boolexpr;
   node->next = next;
   return node;
 }
+
 If* ast_if_else(CmdList *cmdlist){
   If* node = (If*) malloc(sizeof(If));
   node->type = ELSE; //Acho que eh isso fon - APAGAR
   node->cmdlist = cmdlist;
-  node->boolexpr = boolexpr;
-  node->next = next;
   return node;
 }
 
@@ -194,6 +169,7 @@ Printf* ast_printf(char* s, VarList *varlist){
   node->varlist = varlist;
   return node;
 }
+
 Scanf* ast_scanf(char* s, VarList *varlist){
   Scanf* node = (Scanf*) malloc(sizeof(Scanf));
   node->s = s;
