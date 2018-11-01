@@ -9,6 +9,6 @@ while(a == 2){
 
 while(a) b = 2;
 
-printf("oi",a);
+scanf("oi",a);
 
 printf("oipoi",a,b,c);

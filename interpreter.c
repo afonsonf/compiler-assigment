@@ -145,6 +145,14 @@ void printPrintf(Printf *cmdprintf, int tabs){
   printVarList(cmdprintf->varlist,tabs+2);
 }
 
+void printScanf(Scanf* cmdscanf, int tabs){
+  printTab(tabs);
+  printf("scanf\n");
+  printString(cmdscanf->s, tabs+2);
+  printf("\n");
+  printVarList(cmdscanf->varlist,tabs+2);
+}
+
 void printCmd(Cmd *cmd, int tabs){
   if(cmd->type == E_Attrib){
     printAttr(cmd->attr.cmdattr,tabs);
@@ -159,7 +167,7 @@ void printCmd(Cmd *cmd, int tabs){
     printPrintf(cmd->attr.cmdprintf,tabs);
   }
   else if(cmd->type == E_Scanf){
-
+    printScanf(cmd->attr.cmdscanf,tabs);
   }
 }
 

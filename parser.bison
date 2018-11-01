@@ -8,9 +8,10 @@
   OPENCHAV
   CLOSECHAV
 
-%token 
+%token
   WHILE
   PRINTF
+  SCANF
 
 %token
   VARNAME
@@ -63,6 +64,7 @@
   Attrib *attribvalue;
   While *whilevalue;
   Printf *printfvalue;
+  Scanf *scanfvalue;
 
   Cmd *cmdvalue;
   CmdList *cmdlistvalue;
@@ -81,6 +83,7 @@
 %type <attribvalue> attrib
 %type <whilevalue> while
 %type <printfvalue> printf
+%type <scanfvalue> scanf
 
 %type <cmdvalue> cmd
 %type <cmdlistvalue> cmdlist
@@ -125,6 +128,10 @@ cmd:
   printf {
     $$ = ast_cmd_printf($1);
   }
+  |
+  scanf {
+    $$ = ast_cmd_scanf($1);
+  }
 
 while:
   WHILE OPENPAR boolexpr CLOSEPAR OPENCHAV cmdlist CLOSECHAV {
@@ -142,6 +149,16 @@ printf:
   |
   PRINTF OPENPAR STRING CLOSEPAR SEMICOLON {
     $$ = ast_printf($3, NULL);
+  }
+
+
+scanf:
+  SCANF OPENPAR STRING COMMA varlist CLOSEPAR SEMICOLON {
+    $$ = ast_scanf($3, $5);
+  }
+  |
+  SCANF OPENPAR STRING CLOSEPAR SEMICOLON {
+    $$ = ast_scanf($3, NULL);
   }
 
 attrib:
@@ -232,7 +249,7 @@ VARTYPE:
   VARINT VARNAME{
     $$ = ast_var(VARINT,$2);
   }
-  
+
 VARNOTYPE:
   VARNAME{
     $$ = ast_var(NOTYPE, $1);

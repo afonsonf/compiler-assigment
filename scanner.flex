@@ -14,9 +14,9 @@ int yyline = 1;
 #.*\n { yyline++; }
 \n { yyline++; }
 
-\-?[0-9]+ { 
+\-?[0-9]+ {
    yylval.intValue = atoi(yytext);
-   return INT; 
+   return INT;
 }
 
 "==" { return EQUALS; }
@@ -53,6 +53,7 @@ int yyline = 1;
 
 "while"  { return WHILE; }
 "printf" { return PRINTF; }
+"scanf" { return SCANF; }
 
 [a-z][a-zA-z0-9]* {
     yylval.varname = strdup(yytext);
@@ -61,4 +62,3 @@ int yyline = 1;
 
 .  { yyerror("unexpected character"); }
 %%
-
