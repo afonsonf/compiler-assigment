@@ -11,7 +11,9 @@
 %token
   MAIN
   WHILE
+  IF
   FOR
+  ELSE
   PRINTF
   SCANF
 
@@ -66,6 +68,7 @@
   Attrib *attribvalue;
   While *whilevalue;
   For *forvalue;
+  If *ifvalue;
   Printf *printfvalue;
   Scanf *scanfvalue;
 
@@ -88,6 +91,7 @@
 %type <forvalue> for
 %type <printfvalue> printf
 %type <scanfvalue> scanf
+%type <ifvalue> if
 
 %type <cmdvalue> cmd
 %type <cmdlistvalue> cmdlist
@@ -140,7 +144,7 @@ cmd:
     $$ = ast_cmd_while($1);
   }
   |
-  for{
+  for {
     $$ = ast_cmd_for($1);
   }
   |
@@ -150,6 +154,10 @@ cmd:
   |
   scanf {
     $$ = ast_cmd_scanf($1);
+  }
+  |
+  if {
+    $$ = ast_cmd_if($1);
   }
 ;
 
@@ -167,12 +175,23 @@ statement:
   }
 ;
 
-for:;
+if: 
+  IF OPENPAR boolexpr CLOSEPAR statement {
+    $$ = ast_if_first($3,$5,NULL);
+  }
+  |
+  IF OPENPAR boolexpr CLOSEPAR OPENCHAV cmdlist CLOSECHAV ELSE statement {
+    $$ = ast_if_first($3,$6,NULL);
+  }
+;
 
 while:
   WHILE OPENPAR boolexpr CLOSEPAR statement {
     $$ = ast_while($3,$5);
   }
+;
+
+for: 
 ;
 
 printf:

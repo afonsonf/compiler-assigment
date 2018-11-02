@@ -53,7 +53,9 @@ int yyline = 1;
 
 "while"  { return WHILE; }
 "printf" { return PRINTF; }
-"scanf" { return SCANF; }
+"scanf"  { return SCANF; }
+"if"     { return IF; }
+"else"   { return ELSE; }
 
 "main" { return MAIN; }
 

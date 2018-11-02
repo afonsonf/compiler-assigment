@@ -83,7 +83,7 @@ struct _Attrib{
 };
 
 struct _If{
-  enum {IF, ELSEIF, ELSE} type;
+  enum {IFTYPE, ELSEIFTYPE, ELSETYPE} type;
   struct _BoolExpr *boolexpr;
   struct _CmdList *cmdlist;
   struct _If *next;
