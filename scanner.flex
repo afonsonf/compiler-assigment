@@ -16,7 +16,7 @@ int yyline = 1;
 
 \-?[0-9]+ {
    yylval.intValue = atoi(yytext);
-   return INT;
+   return NUMBER;
 }
 
 "==" { return EQUALS; }
@@ -54,6 +54,8 @@ int yyline = 1;
 "while"  { return WHILE; }
 "printf" { return PRINTF; }
 "scanf" { return SCANF; }
+
+"main" { return MAIN; }
 
 [a-z][a-zA-z0-9]* {
     yylval.varname = strdup(yytext);

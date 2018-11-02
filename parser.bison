@@ -9,6 +9,7 @@
   CLOSECHAV
 
 %token
+  MAIN
   WHILE
   PRINTF
   SCANF
@@ -21,7 +22,7 @@
   NOTYPE
 
 %token
-  INT
+  NUMBER
   PLUS
   MINUS
   MULT
@@ -70,7 +71,7 @@
   CmdList *cmdlistvalue;
 }
 
-%type <intValue> INT
+%type <intValue> NUMBER
 %type <strvalue> STRING
 %type <varname> VARNAME
 %type <varvalue> VARTYPE
@@ -87,6 +88,8 @@
 
 %type <cmdvalue> cmd
 %type <cmdlistvalue> cmdlist
+
+%type <cmdlistvalue> mainfunction
 
 // Use "%code requires" to make declarations go
 // into both parser.c and parser.h
@@ -105,7 +108,13 @@ CmdList* root;
 }
 
 %%
-program: cmdlist { root = $1; }
+program: mainfunction { root = $1; };
+
+mainfunction:
+  VARINT MAIN OPENPAR CLOSEPAR OPENCHAV cmdlist CLOSECHAV{
+    $$ = $6;
+  }
+;
 
 cmdlist:
   cmd cmdlist {
@@ -115,6 +124,7 @@ cmdlist:
   cmd {
     $$ = ast_cmdlist($1,NULL);
   }
+;
 
 cmd:
   attrib {
@@ -132,6 +142,7 @@ cmd:
   scanf {
     $$ = ast_cmd_scanf($1);
   }
+;
 
 while:
   WHILE OPENPAR boolexpr CLOSEPAR OPENCHAV cmdlist CLOSECHAV {
@@ -141,6 +152,7 @@ while:
   WHILE OPENPAR boolexpr CLOSEPAR cmd {
     $$ = ast_while($3,ast_cmdlist($5,NULL));
   }
+;
 
 printf:
   PRINTF OPENPAR STRING COMMA varlist CLOSEPAR SEMICOLON {
@@ -150,7 +162,7 @@ printf:
   PRINTF OPENPAR STRING CLOSEPAR SEMICOLON {
     $$ = ast_printf($3, NULL);
   }
-
+;
 
 scanf:
   SCANF OPENPAR STRING COMMA varlist CLOSEPAR SEMICOLON {
@@ -160,6 +172,7 @@ scanf:
   SCANF OPENPAR STRING CLOSEPAR SEMICOLON {
     $$ = ast_scanf($3, NULL);
   }
+;
 
 attrib:
   VARTYPE ATTR expr SEMICOLON{
@@ -169,6 +182,7 @@ attrib:
   VARNOTYPE ATTR expr SEMICOLON{
     $$ = ast_attrib($1,$3);
   }
+;
 
 boolexpr:
   expr {
@@ -206,9 +220,10 @@ boolexpr:
   boolexpr ORLOGIC boolexpr {
     $$ = ast_boolexpr_complex(ORLOGIC, $1, $3);
   }
+;
 
 expr:
-  INT {
+  NUMBER {
     $$ = ast_expr_integer($1);
   }
   |
@@ -235,6 +250,7 @@ expr:
   expr MOD expr {
     $$ = ast_expr_operation(MOD, $1, $3);
   }
+;
 
 varlist:
   VARNOTYPE COMMA varlist {
@@ -244,17 +260,19 @@ varlist:
   VARNOTYPE{
     $$ = ast_varlist($1, NULL);
   }
+;
 
 VARTYPE:
   VARINT VARNAME{
     $$ = ast_var(VARINT,$2);
   }
+;
 
 VARNOTYPE:
   VARNAME{
     $$ = ast_var(NOTYPE, $1);
   }
-  ;
+;
 %%
 
 void yyerror(const char* err) {
