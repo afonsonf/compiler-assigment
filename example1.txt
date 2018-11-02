@@ -1,15 +1,21 @@
-int a = 2;
-a = a + 2;
+int main(){
+    int a = 2;
+    a = a + 2;
 
-while(a == 2){
-    int b = 3;
-    while(1) b =1;
-    printf("a");
-}
+    while(a == 2){
+        int b = 3;
+        while(1) scanf("\n");
+        printf("a");
+    }
 
-while(a) b = 2;
+    while(a) b = 2;
 
+<<<<<<< HEAD
 scanf("oi",a);
 scanf("\n");
+=======
+    scanf("oi",a);
+>>>>>>> 3e4ff2e90036b68dff2e98740f994073b0c01289
 
-printf("oipoi",a,b,c);
+    printf("oipoi",a,b,c);
+}
