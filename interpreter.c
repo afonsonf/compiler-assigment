@@ -137,6 +137,13 @@ void printWhile(While *cmdwhile, int tabs){
   printCmdList(cmdwhile->cmdlist,tabs+2);
 }
 
+void printFor(For* cmdfor, int tabs){
+  printTab(tabs);
+  printf("For\n");
+  //printInit
+  printBoolExpr();
+}
+
 void printPrintf(Printf *cmdprintf, int tabs){
   printTab(tabs);
   printf("printf\n");
@@ -168,6 +175,8 @@ void printCmd(Cmd *cmd, int tabs){
   }
   else if(cmd->type == E_Scanf){
     printScanf(cmd->attr.cmdscanf,tabs);
+  }else if(cmd->type == E_For){
+    printFor(cmd->attr.cmdfor,tabs);
   }
 }
 

@@ -10,6 +10,7 @@
 
 %token
   WHILE
+  FOR
   PRINTF
   SCANF
 
@@ -63,6 +64,7 @@
 
   Attrib *attribvalue;
   While *whilevalue;
+  For *forvalue;
   Printf *printfvalue;
   Scanf *scanfvalue;
 
@@ -82,6 +84,7 @@
 
 %type <attribvalue> attrib
 %type <whilevalue> while
+%type <forvalue> for
 %type <printfvalue> printf
 %type <scanfvalue> scanf
 
@@ -123,6 +126,10 @@ cmd:
   |
   while {
     $$ = ast_cmd_while($1);
+  }
+  |
+  for{
+    $$ = ast_cmd_for($1);
   }
   |
   printf {
