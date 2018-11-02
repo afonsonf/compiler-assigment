@@ -167,6 +167,8 @@ statement:
   }
 ;
 
+for:;
+
 while:
   WHILE OPENPAR boolexpr CLOSEPAR statement {
     $$ = ast_while($3,$5);
