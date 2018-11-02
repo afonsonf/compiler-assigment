@@ -88,6 +88,8 @@
 
 %type <cmdvalue> cmd
 %type <cmdlistvalue> cmdlist
+%type <cmdlistvalue> cmdblock
+%type <cmdlistvalue> statement
 
 %type <cmdlistvalue> mainfunction
 
@@ -111,8 +113,8 @@ CmdList* root;
 program: mainfunction { root = $1; };
 
 mainfunction:
-  VARINT MAIN OPENPAR CLOSEPAR OPENCHAV cmdlist CLOSECHAV{
-    $$ = $6;
+  VARINT MAIN OPENPAR CLOSEPAR cmdblock{
+    $$ = $5;
   }
 ;
 
@@ -144,13 +146,23 @@ cmd:
   }
 ;
 
-while:
-  WHILE OPENPAR boolexpr CLOSEPAR OPENCHAV cmdlist CLOSECHAV {
-    $$ = ast_while($3,$6);
+cmdblock:
+  OPENCHAV cmdlist CLOSECHAV{
+    $$ = $2;
   }
+;
+
+statement:
+  cmdblock
   |
-  WHILE OPENPAR boolexpr CLOSEPAR cmd {
-    $$ = ast_while($3,ast_cmdlist($5,NULL));
+  cmd {
+    $$ = ast_cmdlist($1, NULL);
+  }
+;
+
+while:
+  WHILE OPENPAR boolexpr CLOSEPAR statement {
+    $$ = ast_while($3,$5);
   }
 ;
 
