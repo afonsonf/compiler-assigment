@@ -10,12 +10,9 @@ int main(){
 
     while(a) b = 2;
 
-<<<<<<< HEAD
+
 scanf("oi",a);
 scanf("\n");
-=======
-    scanf("oi",a);
->>>>>>> 3e4ff2e90036b68dff2e98740f994073b0c01289
 
     printf("oipoi",a,b,c);
 }
