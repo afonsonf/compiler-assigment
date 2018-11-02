@@ -140,8 +140,13 @@ void printWhile(While *cmdwhile, int tabs){
 void printFor(For* cmdfor, int tabs){
   printTab(tabs);
   printf("For\n");
-  //printInit
-  printBoolExpr();
+  printAttr(cmdfor->boolexpr,tabs+2);
+  printf("\n");
+  printBoolExpr(cmdfor->boolexpr,tabs+2);
+  printf("\n");
+  printAttr(cmdfor->inc,tabs+2);
+  printf("\n");
+  printCmdList(cmdfor->cmdlist,tabs+2);
 }
 
 void printPrintf(Printf *cmdprintf, int tabs){
