@@ -175,7 +175,7 @@ statement:
   }
 ;
 
-if: 
+if:
   IF OPENPAR boolexpr CLOSEPAR statement {
     $$ = ast_if_first($3,$5,NULL);
   }
@@ -191,7 +191,14 @@ while:
   }
 ;
 
-for: 
+for:
+  FOR OPENPAR VARTYPE ATTR expr SEMICOLON boolexpr SEMICOLON VARNOTYPE ATTR expr CLOSEPAR statement{
+    $$ = ast_for($3,$5,$7,$9,$11,$13);
+  }
+  |
+  FOR OPENPAR VARNOTYPE ATTR expr SEMICOLON boolexpr SEMICOLON VARNOTYPE ATTR expr CLOSEPAR statement{
+    $$ = ast_for($3,$5,$7,$9,$11,$13);
+  }
 ;
 
 printf:

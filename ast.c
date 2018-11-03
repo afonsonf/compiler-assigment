@@ -62,7 +62,7 @@ Var* ast_var(int type, char *name){
 VarList* ast_varlist(Var *var, VarList *next){
   VarList* node = (VarList*) malloc(sizeof(VarList));
   node->var = var;
-  node->next = next; // fon isso nao me parece certo, se for linked list, verificar pls - APAGAR
+  node->next = next;
   return node;
 }
 
@@ -147,11 +147,31 @@ If* ast_if_else(CmdList *cmdlist){
   return node;
 }
 
+/*
+implementação da antiga for.
+
 For* ast_for(Attrib *init, BoolExpr *boolexpr, Attrib *inc, CmdList *cmdlist){
   For* node = (For*) malloc(sizeof(For));
   node->init = init;
   node->boolexpr = boolexpr;
   node->inc = inc;
+  node->cmdlist = cmdlist;
+  return node;
+}
+*/
+
+For* ast_for(Var *var, Expr *value, BoolExpr *boolexpr, Var *incVar, Expr *incValue, CmdList *cmdlist){
+  For* node = (For*) malloc(sizeof(For));
+  Attrib* nodeAttrInit = (Attrib*) malloc(sizeof(Attrib));
+  Attrib* nodeAttrInc = (Attrib*) malloc(sizeof(Attrib));
+  //Tem que ser assim, precisa alocar espaço para as estruturas, se não fizer isso da segmentation fault.
+  nodeAttrInit->var = var;
+  nodeAttrInit->value = value;
+  nodeAttrInc->var = incVar;
+  nodeAttrInc->value = incValue;
+  node->init = nodeAttrInit;
+  node->boolexpr = boolexpr;
+  node->inc = nodeAttrInc;
   node->cmdlist = cmdlist;
   return node;
 }

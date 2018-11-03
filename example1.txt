@@ -15,4 +15,12 @@ int main(){
     scanf("\n");
 
     printf("oipoi",a,b,c);
+
+
+    for(i = 1 ; i < n ; i = i + 1)
+      b = 2;
+
+    for(int i = 0 ; i < n ; i = i + 1){
+      b = 4;
+    }
 }

@@ -153,7 +153,12 @@ If* ast_if_first(BoolExpr* boolexpr, CmdList *cmdlist, If *next);
 If* ast_if_elseif(BoolExpr* boolexpr, CmdList *cmdlist, If *next);
 If* ast_if_else(CmdList *cmdlist);
 
-For* ast_for(Attrib *init, BoolExpr *boolexpr, Attrib *inc, CmdList *cmdlist);
+
+//fon alterei a função for pra poder inicializar do tipo:
+//for(int i = 0;)
+// versão anterior: For* ast_for(Attrib *init, BoolExpr *boolexpr, Attrib *inc, CmdList *cmdlist);
+For* ast_for(Var *var, Expr *value, BoolExpr *boolexpr, Var *incVar, Expr *incValue, CmdList *cmdlist);
+
 
 While* ast_while(BoolExpr* boolexpr, CmdList *cmdlist);
 
