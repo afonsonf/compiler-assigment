@@ -46,7 +46,7 @@ int yyline = 1;
 "{"  { return OPENCHAV; }
 "}"  { return CLOSECHAV; }
 
-"\""[^\"]*""\" {
+\"[^\"]*\" {
     yylval.strvalue = strdup(yytext);
     return STRING;
 }
@@ -63,6 +63,16 @@ int yyline = 1;
 [a-z][a-zA-z0-9]* {
     yylval.varname = strdup(yytext);
     return VARNAME;
+}
+
+\&[a-z][a-zA-z0-9]* {
+    yylval.varname = strdup(yytext);
+    return RVARNAME;
+}
+
+\*[a-z][a-zA-z0-9]* {
+    yylval.varname = strdup(yytext);
+    return PVARNAME;
 }
 
 .  { yyerror("unexpected character"); }

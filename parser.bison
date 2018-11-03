@@ -19,6 +19,8 @@
 
 %token
   VARNAME
+  RVARNAME
+  PVARNAME
   STRING
   VARINT
   ATTR
@@ -78,7 +80,10 @@
 
 %type <intValue> NUMBER
 %type <strvalue> STRING
+%type <varname> VAR
 %type <varname> VARNAME
+%type <varname> RVARNAME
+%type <varname> PVARNAME
 %type <varvalue> VARTYPE
 %type <varvalue> VARNOTYPE
 %type <varlistvalue> varlist
@@ -87,6 +92,7 @@
 %type <boolValue> boolexpr
 
 %type <attribvalue> attrib
+%type <attribvalue> preattrib
 %type <whilevalue> while
 %type <forvalue> for
 %type <printfvalue> printf
@@ -192,12 +198,8 @@ while:
 ;
 
 for:
-  FOR OPENPAR VARTYPE ATTR expr SEMICOLON boolexpr SEMICOLON VARNOTYPE ATTR expr CLOSEPAR statement{
-    $$ = ast_for($3,$5,$7,$9,$11,$13);
-  }
-  |
-  FOR OPENPAR VARNOTYPE ATTR expr SEMICOLON boolexpr SEMICOLON VARNOTYPE ATTR expr CLOSEPAR statement{
-    $$ = ast_for($3,$5,$7,$9,$11,$13);
+  FOR OPENPAR attrib boolexpr SEMICOLON preattrib CLOSEPAR statement{
+    $$ = ast_for($3,$4,$6,$8);
   }
 ;
 
@@ -222,11 +224,15 @@ scanf:
 ;
 
 attrib:
-  VARTYPE ATTR expr SEMICOLON{
+  preattrib SEMICOLON
+;
+
+preattrib:
+  VARTYPE ATTR expr{
     $$ = ast_attrib($1,$3);
   }
   |
-  VARNOTYPE ATTR expr SEMICOLON{
+  VARNOTYPE ATTR expr{
     $$ = ast_attrib($1,$3);
   }
 ;
@@ -310,15 +316,23 @@ varlist:
 ;
 
 VARTYPE:
-  VARINT VARNAME{
+  VARINT VAR{
     $$ = ast_var(VARINT,$2);
   }
 ;
 
 VARNOTYPE:
-  VARNAME{
+  VAR{
     $$ = ast_var(NOTYPE, $1);
   }
+;
+
+VAR:
+  VARNAME
+  |
+  RVARNAME
+  |
+  PVARNAME
 ;
 %%
 

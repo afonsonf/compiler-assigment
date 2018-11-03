@@ -147,8 +147,8 @@ If* ast_if_else(CmdList *cmdlist){
   return node;
 }
 
-/*
-implementação da antiga for.
+
+//implementação da antiga for.
 
 For* ast_for(Attrib *init, BoolExpr *boolexpr, Attrib *inc, CmdList *cmdlist){
   For* node = (For*) malloc(sizeof(For));
@@ -158,8 +158,8 @@ For* ast_for(Attrib *init, BoolExpr *boolexpr, Attrib *inc, CmdList *cmdlist){
   node->cmdlist = cmdlist;
   return node;
 }
-*/
 
+/*
 For* ast_for(Var *var, Expr *value, BoolExpr *boolexpr, Var *incVar, Expr *incValue, CmdList *cmdlist){
   For* node = (For*) malloc(sizeof(For));
   Attrib* nodeAttrInit = (Attrib*) malloc(sizeof(Attrib));
@@ -175,6 +175,7 @@ For* ast_for(Var *var, Expr *value, BoolExpr *boolexpr, Var *incVar, Expr *incVa
   node->cmdlist = cmdlist;
   return node;
 }
+*/
 
 While* ast_while(BoolExpr* boolexpr, CmdList *cmdlist){
   While* node = (While*) malloc(sizeof(While));

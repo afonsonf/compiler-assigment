@@ -11,7 +11,7 @@ int main(){
     while(a) b = 2;
 
 
-    scanf("oi",a);
+    scanf("oi",&a);
     scanf("\n");
 
     printf("oipoi",a,b,c);
