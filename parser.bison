@@ -225,13 +225,17 @@ scanf:
 
 attrib:
   preattrib SEMICOLON
-;
-
-preattrib:
-  VARTYPE ATTR expr{
+  |
+  VARTYPE ATTR expr SEMICOLON{
     $$ = ast_attrib($1,$3);
   }
   |
+  VARTYPE SEMICOLON{
+    $$ = ast_attrib($1, NULL);
+  }
+;
+
+preattrib:
   VARNOTYPE ATTR expr{
     $$ = ast_attrib($1,$3);
   }

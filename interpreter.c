@@ -128,8 +128,10 @@ void printAttr(Attrib *attrib, int tabs){
   printTab(tabs);
   printf("attrib\n");
   printVar(attrib->var, tabs+2);
-  printf("\n");
-  printExpr(attrib->value,tabs+2);
+  if(attrib->value){
+    printf("\n");
+    printExpr(attrib->value,tabs+2);
+  }
 }
 
 void printIf(If *cmdif, int tabs){
@@ -169,16 +171,20 @@ void printPrintf(Printf *cmdprintf, int tabs){
   printTab(tabs);
   printf("printf\n");
   printString(cmdprintf->s, tabs+2);
-  printf("\n");
-  printVarList(cmdprintf->varlist,tabs+2);
+  if(cmdprintf->varlist){
+    printf("\n");
+    printVarList(cmdprintf->varlist,tabs+2);
+  }
 }
 
 void printScanf(Scanf* cmdscanf, int tabs){
   printTab(tabs);
   printf("scanf\n");
   printString(cmdscanf->s, tabs+2);
-  printf("\n");
-  printVarList(cmdscanf->varlist,tabs+2);
+  if(cmdscanf->varlist){
+    printf("\n");
+    printVarList(cmdscanf->varlist,tabs+2);
+  }
 }
 
 void printCmd(Cmd *cmd, int tabs){
