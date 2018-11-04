@@ -83,10 +83,10 @@ struct _Attrib{
 };
 
 struct _If{
-  enum {IFTYPE, ELSEIFTYPE, ELSETYPE} type;
+  enum {IFTYPE, ELSETYPE} type;
   struct _BoolExpr *boolexpr;
   struct _CmdList *cmdlist;
-  struct _If *next;
+  struct _CmdList *cmdlist_pos;
 };
 
 struct _For{
@@ -149,9 +149,8 @@ CmdList* ast_cmdlist(Cmd *cmd, CmdList *next);
 
 Attrib* ast_attrib(Var *var, Expr *value);
 
-If* ast_if_first(BoolExpr* boolexpr, CmdList *cmdlist, If *next);
-If* ast_if_elseif(BoolExpr* boolexpr, CmdList *cmdlist, If *next);
-If* ast_if_else(CmdList *cmdlist);
+If* ast_if(BoolExpr* boolexpr, CmdList *cmdlist);
+If* ast_if_else(BoolExpr* boolexpr, CmdList *cmdlist, CmdList *cmdlist_pos);
 
 
 //fon alterei a função for pra poder inicializar do tipo:

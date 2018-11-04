@@ -14,7 +14,9 @@ int main(){
     scanf("oi",&a);
     scanf("\n");
 
-    printf("oipoi",a,b,c);
+    if(1) printf("oipoi",a,b,c);
+    
+    if(1) {if(1) printf("a"); int a = 1;} else {printf("b");}
 
 
     for(i = 1 ; i < n ; i = i + 1)

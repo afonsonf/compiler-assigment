@@ -10,8 +10,11 @@ void printExpr(Expr* expr, int tabs);
 void printBoolExpr(BoolExpr* expr, int tabs);
 
 void printAttr(Attrib *attrib, int tabs);
+void printIf(If *cmdif, int tabs);
 void printWhile(While *cmdwhile, int tabs);
+void printFor(For *cmdfor, int tabs);
 void printPrintf(Printf *cmdprintf, int tabs);
+void printScanf(Scanf *cmdscanf, int tabs);
 
 void printCmd(Cmd *cmd, int tabs);
 void printCmdList(CmdList *cmdlist, int tabs);
@@ -129,6 +132,19 @@ void printAttr(Attrib *attrib, int tabs){
   printExpr(attrib->value,tabs+2);
 }
 
+void printIf(If *cmdif, int tabs){
+  printTab(tabs);
+  printf("if\n");
+  printBoolExpr(cmdif->boolexpr,tabs+2);
+  printf("\n");
+  printCmdList(cmdif->cmdlist,tabs+2);
+  if(cmdif->type == ELSETYPE){
+    printTab(tabs);
+    printf("else\n");
+    printCmdList(cmdif->cmdlist_pos,tabs+2);
+  }
+}
+
 void printWhile(While *cmdwhile, int tabs){
   printTab(tabs);
   printf("while\n");
@@ -170,7 +186,7 @@ void printCmd(Cmd *cmd, int tabs){
     printAttr(cmd->attr.cmdattr,tabs);
   }
   else if(cmd->type == E_If){
-
+    printIf(cmd->attr.cmdif,tabs);
   }
   else if(cmd->type == E_While){
     printWhile(cmd->attr.cmdwhile,tabs);
@@ -209,6 +225,4 @@ int main(int argc, char** argv) {
       printCmdList(root,0);
   }
   return 0;
-
-
 }

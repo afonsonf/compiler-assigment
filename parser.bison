@@ -183,11 +183,11 @@ statement:
 
 if:
   IF OPENPAR boolexpr CLOSEPAR statement {
-    $$ = ast_if_first($3,$5,NULL);
+    $$ = ast_if($3,$5);
   }
   |
   IF OPENPAR boolexpr CLOSEPAR OPENCHAV cmdlist CLOSECHAV ELSE statement {
-    $$ = ast_if_first($3,$6,NULL);
+    $$ = ast_if_else($3,$6,$9);
   }
 ;
 
