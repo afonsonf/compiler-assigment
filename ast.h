@@ -3,7 +3,16 @@
 #ifndef __ast_h__
 #define __ast_h__
 
-// AST for expressions
+struct _Var{
+  int type;
+  char *name;
+};
+
+struct _VarList{
+  struct _Var *var;
+  struct _VarList *next;
+};
+
 struct _Expr {
   enum {
     E_INTEGER,
@@ -43,14 +52,38 @@ struct _BoolExpr{
   } attr;
 };
 
-struct _Var{
-  int type;
-  char *name;
+struct _Attrib{
+  struct _Var *var;
+  struct _Expr *value;
 };
 
-struct _VarList{
-  struct _Var *var;
-  struct _VarList *next;
+struct _If{
+  enum {IFTYPE, ELSETYPE} type;
+  struct _BoolExpr *boolexpr;
+  struct _CmdList *cmdlist;
+  struct _CmdList *cmdlist_pos;
+};
+
+struct _While{
+  struct _BoolExpr *boolexpr;
+  struct _CmdList *cmdlist;
+};
+
+struct _For{
+  struct _Attrib *init;
+  struct _BoolExpr *boolexpr;
+  struct _Attrib *inc;
+  struct _CmdList *cmdlist;
+};
+
+struct _Printf{
+  char *s;
+  struct _VarList *varlist;
+};
+
+struct _Scanf{
+  char *s;
+  struct _VarList *varlist;
 };
 
 struct _Cmd {
@@ -77,48 +110,16 @@ struct _CmdList{
   struct _CmdList *next;
 };
 
-struct _Attrib{
-  struct _Var *var;
-  struct _Expr *value;
-};
-
-struct _If{
-  enum {IFTYPE, ELSETYPE} type;
-  struct _BoolExpr *boolexpr;
-  struct _CmdList *cmdlist;
-  struct _CmdList *cmdlist_pos;
-};
-
-struct _For{
-  struct _Attrib *init;
-  struct _BoolExpr *boolexpr;
-  struct _Attrib *inc;
+struct _Function{
+  char* name;
   struct _CmdList *cmdlist;
 };
 
-struct _While{
-  struct _BoolExpr *boolexpr;
-  struct _CmdList *cmdlist;
-};
-
-struct _Printf{
-  char *s;
-  struct _VarList *varlist;
-};
-
-struct _Scanf{
-  char *s;
-  struct _VarList *varlist;
-};
-
-
-typedef struct _Expr Expr; // Convenience typedef
-typedef struct _BoolExpr BoolExpr; // Convenience typedef
 typedef struct _Var Var;
 typedef struct _VarList VarList;
-typedef struct _Attrib Attrib;
-typedef struct _Cmd Cmd;
-typedef struct _CmdList CmdList;
+typedef struct _Expr Expr; // Convenience typedef
+typedef struct _BoolExpr BoolExpr; // Convenience typedef
+
 typedef struct _Attrib Attrib;
 typedef struct _If If;
 typedef struct _For For;
@@ -126,7 +127,14 @@ typedef struct _While While;
 typedef struct _Printf Printf;
 typedef struct _Scanf Scanf;
 
-// Constructor functions (see implementation in ast.c)
+typedef struct _Cmd Cmd;
+typedef struct _CmdList CmdList;
+
+typedef struct _Function Function;
+
+Var* ast_var(int type, char *name);
+VarList* ast_varlist(Var *var, VarList *next);
+
 Expr* ast_expr_integer(int v);
 Expr* ast_expr_var(Var *var);
 Expr* ast_expr_operation(int operator, Expr* left, Expr* right);
@@ -135,8 +143,14 @@ BoolExpr* ast_boolexpr_leaf(Expr* exp);
 BoolExpr* ast_boolexpr(int operator, Expr* left, Expr* right);
 BoolExpr* ast_boolexpr_complex(int operator, BoolExpr* left, BoolExpr* right);
 
-Var* ast_var(int type, char *name);
-VarList* ast_varlist(Var *var, VarList *next);
+Attrib* ast_attrib(Var *var, Expr *value);
+If* ast_if(BoolExpr* boolexpr, CmdList *cmdlist);
+If* ast_if_else(BoolExpr* boolexpr, CmdList *cmdlist, CmdList *cmdlist_pos);
+While* ast_while(BoolExpr* boolexpr, CmdList *cmdlist);
+For* ast_for(Attrib *init, BoolExpr *boolexpr, Attrib *inc, CmdList *cmdlist);
+//For* ast_for(Var *var, Expr *value, BoolExpr *boolexpr, Var *incVar, Expr *incValue, CmdList *cmdlist);
+Printf* ast_printf(char* s, VarList *varlist);
+Scanf* ast_scanf(char* s, VarList *varlist);
 
 Cmd* ast_cmd_attr(Attrib *cmdattrib);
 Cmd* ast_cmd_if(If *cmdif);
@@ -147,23 +161,6 @@ Cmd* ast_cmd_scanf(Scanf *cmdscanf);
 
 CmdList* ast_cmdlist(Cmd *cmd, CmdList *next);
 
-Attrib* ast_attrib(Var *var, Expr *value);
-
-If* ast_if(BoolExpr* boolexpr, CmdList *cmdlist);
-If* ast_if_else(BoolExpr* boolexpr, CmdList *cmdlist, CmdList *cmdlist_pos);
-
-
-//fon alterei a função for pra poder inicializar do tipo:
-//for(int i = 0;)
-// versão anterior: 
-For* ast_for(Attrib *init, BoolExpr *boolexpr, Attrib *inc, CmdList *cmdlist);
-//For* ast_for(Var *var, Expr *value, BoolExpr *boolexpr, Var *incVar, Expr *incValue, CmdList *cmdlist);
-
-
-While* ast_while(BoolExpr* boolexpr, CmdList *cmdlist);
-
-Printf* ast_printf(char* s, VarList *varlist);
-
-Scanf* ast_scanf(char* s, VarList *varlist);
+Function* ast_function(char *name, CmdList *cmdlist);
 
 #endif

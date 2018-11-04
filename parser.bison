@@ -20,7 +20,6 @@
 %token
   VARNAME
   RVARNAME
-  PVARNAME
   STRING
   VARINT
   ATTR
@@ -53,6 +52,7 @@
 %left PLUS MINUS
 %left MULT DIV MOD
 
+
 // Root-level grammar symbol
 %start program;
 
@@ -76,6 +76,8 @@
 
   Cmd *cmdvalue;
   CmdList *cmdlistvalue;
+
+  Function *functionvalue;
 }
 
 %type <intValue> NUMBER
@@ -83,7 +85,6 @@
 %type <varname> VAR
 %type <varname> VARNAME
 %type <varname> RVARNAME
-%type <varname> PVARNAME
 %type <varvalue> VARTYPE
 %type <varvalue> VARNOTYPE
 %type <varlistvalue> varlist
@@ -104,7 +105,7 @@
 %type <cmdlistvalue> cmdblock
 %type <cmdlistvalue> statement
 
-%type <cmdlistvalue> mainfunction
+%type <functionvalue> mainfunction
 
 // Use "%code requires" to make declarations go
 // into both parser.c and parser.h
@@ -118,7 +119,7 @@ extern int yyline;
 extern char* yytext;
 extern FILE* yyin;
 extern void yyerror(const char* msg);
-CmdList* root;
+Function* root;
 
 }
 
@@ -127,7 +128,7 @@ program: mainfunction { root = $1; };
 
 mainfunction:
   VARINT MAIN OPENPAR CLOSEPAR cmdblock{
-    $$ = $5;
+    $$ = ast_function("main",$5);
   }
 ;
 
@@ -335,8 +336,6 @@ VAR:
   VARNAME
   |
   RVARNAME
-  |
-  PVARNAME
 ;
 %%
 

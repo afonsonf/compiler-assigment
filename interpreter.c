@@ -19,6 +19,7 @@ void printScanf(Scanf *cmdscanf, int tabs);
 void printCmd(Cmd *cmd, int tabs);
 void printCmdList(CmdList *cmdlist, int tabs);
 
+void printfFunction(Function *function, int tabs);
 
 void printTab(int n){
   for(int i=0;i<n-1;i++) printf("  ");
@@ -218,6 +219,14 @@ void printCmdList(CmdList *cmdlist, int tabs){
   }
 }
 
+void printFunction(Function *function, int tabs){
+  printTab(tabs);printf("+++++++++++++++++\n");
+  printTab(tabs);printf("+ %s\n",function->name);
+  printTab(tabs);printf("+++++++++++++++++\n");
+  printf("\n");
+  printCmdList(function->cmdlist,tabs);
+}
+
 int main(int argc, char** argv) {
   --argc; ++argv;
   if (argc != 0) {
@@ -228,7 +237,7 @@ int main(int argc, char** argv) {
     }
   } //  yyin = stdin
   if (yyparse() == 0) {
-      printCmdList(root,0);
+      printFunction(root,0);
   }
   return 0;
 }

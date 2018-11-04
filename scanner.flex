@@ -70,10 +70,5 @@ int yyline = 1;
     return RVARNAME;
 }
 
-\*[a-z][a-zA-z0-9]* {
-    yylval.varname = strdup(yytext);
-    return PVARNAME;
-}
-
 .  { yyerror("unexpected character"); }
 %%
