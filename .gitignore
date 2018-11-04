@@ -6,3 +6,4 @@ parser.h
 parser.o
 scanner.c
 scanner.o
+*.zip

@@ -14,7 +14,7 @@ O programa deve conter uma unica função: int main(){...}
 
 Dentro dessa função são aceites os seguintes comandos:
 
-* Declarações de variáveis do tipo int (com ou sem atribuição) seguidas de um ;
+* Declarações de variáveis do tipo int (com ou sem atribuição)
 
 ```cpp
     exemplo:
